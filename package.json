@@ -1,0 +1,31 @@
+{
+  "name": "wrap",
+  "version": "1.0.0",
+  "description": "WRap (Witness Report api)",
+  "main": "./dist",
+  "scripts": {
+    "start": "node ./dist",
+    "build": "npx tsc",
+    "dev": "concurrently \"npx tsc --watch\" \"nodemon -q ./dist\"",
+    "lint": "eslint ."
+  },
+  "keywords": [
+    "witness",
+    "report",
+    "case",
+    "file",
+    "crime"
+  ],
+  "author": "BLu",
+  "license": "MIT",
+  "dependencies": {
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.38.1",
+    "@typescript-eslint/parser": "^5.38.1",
+    "concurrently": "^7.4.0",
+    "eslint": "^8.24.0",
+    "nodemon": "^2.0.20",
+    "typescript": "^4.8.4"
+  }
+}
