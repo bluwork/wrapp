@@ -1,0 +1,3 @@
+type SearchItem = {
+  title: string;
+};
