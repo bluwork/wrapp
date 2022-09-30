@@ -1,5 +1,17 @@
 import 'dotenv/config';
+import fs from 'fs';
 import app from './app';
+
+const resolveReportsDirPath = () => {
+  try {
+    const dirPath = process.env.REPORTS_FILE_DIRECTORY || './data';
+    if (!fs.existsSync(dirPath)) {
+      fs.mkdirSync(dirPath);
+    }
+  } catch (error) {
+    console.error(error);
+  }
+};
 
 const startServer = () => {
   const port = process.env.PORT || 3000;
@@ -8,4 +20,9 @@ const startServer = () => {
   });
 };
 
-startServer();
+const start = () => {
+  resolveReportsDirPath();
+  startServer();
+};
+
+start();
