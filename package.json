@@ -2,8 +2,7 @@
   "name": "wrap",
   "version": "1.0.0",
   "description": "WRap (Witness Report api)",
-  "main": "./dist",
-  "scripts": {
+  "main": "./dist",  "scripts": {
     "start": "node ./dist",
     "build": "npx tsc",
     "dev": "concurrently \"npx tsc --watch\" \"nodemon -q ./dist\"",
@@ -18,6 +17,7 @@
   ],
   "author": "BLu",
   "license": "MIT",
+  "private": true,
   "dependencies": {
     "country-code-lookup": "^0.0.20",
     "dotenv": "^16.0.2",
