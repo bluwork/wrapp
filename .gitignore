@@ -17,6 +17,9 @@ tmp
 # Coverage reports
 coverage
 
+# Jest
+jest.config.js
+
 # API keys and secrets
 .env
 
