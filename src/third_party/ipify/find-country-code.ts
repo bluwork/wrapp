@@ -1,5 +1,7 @@
 import countrySearch from './config/country-search';
 
+// TODO Implement caching to reduce ipify calls by remembering country for asked IP
+
 const findCountryCode = async (
   apiKey: string,
 ): Promise<CountrySearchResult> => {

@@ -50,4 +50,17 @@ describe('Input validation', () => {
       status: 400,
     });
   });
+  it('Should call next with error object if both params are missing', () => {
+    validateRequestBody(
+      mockRequest as Request,
+      mockResponse as Response,
+      mockNext as NextFunction,
+    );
+    expect(mockNext).toBeCalled();
+    expect(mockNext).toBeCalledWith({
+      message: 'Name is missing',
+      name: 'Missing parameter',
+      status: 400,
+    });
+  });
 });

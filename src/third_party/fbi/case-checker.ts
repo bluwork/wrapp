@@ -1,5 +1,10 @@
 import titleValidation from './config/title-validation';
 
+// TODO Implement caching to reduce fbi api calls
+// key : caseTitle
+// value: caseSearchResult plus timestamp
+// ttl: 24 * 60 * 60 * 1000  // 1 day? Or more?
+
 const caseInfo = async (caseTitle: string): Promise<CaseSearchResult> => {
   const searchResult: CaseSearchResult = {
     caseFound: false,
