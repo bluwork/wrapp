@@ -31,6 +31,14 @@ To run tests, type:
 ```
 npm run test
 ```
+To access api, send POST request to http://localhost:port/report endpoint.
+Request body:
+```
+{
+  "name": "<case title name>",
+  "phone": "<phone number>"
+}
+```
 ## Author
  - Boban Lukic : bbnlkc@gmail.com
 
