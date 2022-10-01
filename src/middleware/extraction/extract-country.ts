@@ -9,21 +9,20 @@ const extractCountry = async (
   next: NextFunction,
 ) => {
   try {
-    let country;
-    if (
-      typeof process.env.ALWAYS_GET_COUNTRY_FROM_IP === 'string' &&
-      (process.env.ALWAYS_GET_COUNTRY_FROM_IP as string).toLowerCase() ===
-        'true'
-    ) {
-      country = await getCountryFromIpify();
-    } else {
-      if (req.bundle.countryCode) {
-        const countryData = lookup.byIso(req.bundle.countryCode);
-        if (countryData) {
-          country = countryData.country;
+    // Country is, by default, extracted from phone number. For some numbers (eg +800)
+    // country cannot be extracted
+    let country = getCountryFromCode(req.bundle.countryCode);
+
+    // If alwaysGetCountryFromIp is true, we always get country from geo locating
+    // Also, if we do not want to use geo locating every time, but we cannot get country
+    // from phone number, we then need to try to get it from ipify
+
+    if (useGeoLocation) {
+      if (!country || alwaysGetCountryFromIp) {
+        const countryFromIpify = await getCountryFromIpify();
+        if (countryFromIpify) {
+          country = countryFromIpify;
         }
-      } else {
-        country = await getCountryFromIpify();
       }
     }
 
@@ -34,7 +33,7 @@ const extractCountry = async (
       throw {
         name: 'Insufficient info',
         status: StatusCodes.BAD_REQUEST,
-        message: `ALL ways of getting info failed. Please check api keys in config.`,
+        message: `Cannot get data. Please check api keys in config.`,
       };
     }
   } catch (error) {
@@ -43,10 +42,8 @@ const extractCountry = async (
 };
 
 const getCountryFromIpify = async () => {
-  if (process.env.IPIFY_API_KEY) {
-    const countrySearchResult = await findCountryCode(
-      process.env.IPIFY_API_KEY as string,
-    );
+  if (ipifyApiKey) {
+    const countrySearchResult = await findCountryCode(ipifyApiKey);
     return lookup.byIso(countrySearchResult.countryCode)?.country;
   } else {
     throw {
@@ -56,5 +53,28 @@ const getCountryFromIpify = async () => {
     };
   }
 };
+
+const getCountryFromCode = (code: string | undefined): string | undefined => {
+  if (code) {
+    const countryData = lookup.byIso(code);
+    if (countryData) {
+      return countryData.country;
+    }
+  }
+};
+
+const processEnv = (variable: any) => {
+  if (typeof variable === 'string') {
+    if (variable.toLowerCase() === 'true') return true;
+    if (variable.toLowerCase() === 'false') return false;
+  }
+  return variable;
+};
+
+const useGeoLocation = processEnv(process.env.USE_GEO_LOCATING);
+const ipifyApiKey = processEnv(process.env.IPIFY_API_KEY);
+const alwaysGetCountryFromIp = processEnv(
+  process.env.ALWAYS_GET_COUNTRY_FROM_IP,
+);
 
 export default extractCountry;
