@@ -22,9 +22,8 @@ describe('Input validation', () => {
     expect(mockNext).toBeCalled();
     expect(mockNext).not.toBeCalledWith({});
   });
-  it('Should call next with error object if one or both params are missing', () => {
+  it('Should call next with error object if phone number is missing', () => {
     mockRequest.body.name = 'Amazing';
-    // mockRequest.body.phone = '+3234343';
     validateRequestBody(
       mockRequest as Request,
       mockResponse as Response,
@@ -33,6 +32,20 @@ describe('Input validation', () => {
     expect(mockNext).toBeCalled();
     expect(mockNext).toBeCalledWith({
       message: 'Phone number is missing',
+      name: 'Missing parameter',
+      status: 400,
+    });
+  });
+  it('Should call next with error object if name - case file title is missing', () => {
+    mockRequest.body.phone = '+3234343';
+    validateRequestBody(
+      mockRequest as Request,
+      mockResponse as Response,
+      mockNext as NextFunction,
+    );
+    expect(mockNext).toBeCalled();
+    expect(mockNext).toBeCalledWith({
+      message: 'Name is missing',
       name: 'Missing parameter',
       status: 400,
     });
