@@ -27,6 +27,10 @@ To start server, type:
 ```
 npm run start
 ```
+To run tests, type:
+```
+npm run test
+```
 ## Author
  - Boban Lukic : bbnlkc@gmail.com
 
